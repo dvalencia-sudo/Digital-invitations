@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Invitaciones digitales personalizadas para tus momentos especiales.">
+  <title>TuMarca | Invitaciones digitales</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#inicio">Tu<span>Marca</span></a>
+      <nav aria-label="Navegación principal">
+        <a href="#servicios">Servicios</a>
+        <a href="#ventajas">Ventajas</a>
+        <a href="#proceso">Cómo funciona</a>
+        <a class="button" href="#contacto">Solicitar información</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">Invitaciones digitales personalizadas</span>
+          <h1>Tu celebración merece una invitación <span>especial.</span></h1>
+          <p>Diseñamos invitaciones digitales para compartir los detalles de tu evento de una manera bonita, práctica y fácil.</p>
+          <div class="actions">
+            <a class="button" href="#contacto">Quiero mi invitación</a>
+            <a class="button secondary" href="#servicios">Conocer servicios</a>
+          </div>
+        </div>
+        <div class="preview-wrap" aria-label="Ejemplo ilustrativo de invitación digital">
+          <div class="preview">
+            <div class="ornament">✦ ✿ ✦</div>
+            <small>Estás invitado a</small>
+            <h2>Un día<br>inolvidable</h2>
+            <p>Una celebración única<br>Fecha · Hora · Lugar</p>
+            <div class="ornament">♡</div>
+          </div>
+          <div class="floating-note">✉ Fácil de compartir</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="servicios">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">Nuestros servicios</span>
+          <h2>Una invitación para cada ocasión</h2>
+          <p>Esta es una base inicial. Aquí podrás añadir tus diseños, precios y ejemplos cuando estén listos.</p>
+        </div>
+        <div class="cards">
+          <article class="card">
+            <div class="card-icon">🖼️</div>
+            <h3>Invitaciones estáticas</h3>
+            <p>Diseños digitales personalizados con la información principal de tu evento.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon">🎞️</div>
+            <h3>Invitaciones en video</h3>
+            <p>Una presentación dinámica para anunciar tu celebración de una forma diferente.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon">💻</div>
+            <h3>Invitaciones web</h3>
+            <p>Una página para reunir los detalles del evento y compartirlos mediante un enlace.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="soft-section" id="ventajas">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">¿Por qué elegirnos?</span>
+          <h2>Prácticas, personalizadas y fáciles de compartir</h2>
+          <p>Una forma sencilla de comunicar los detalles importantes de tu celebración.</p>
+        </div>
+        <div class="cards">
+          <article class="card">
+            <div class="card-icon">🎨</div>
+            <h3>A tu estilo</h3>
+            <p>Colores y temática adaptados a la idea de tu evento.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon">📲</div>
+            <h3>Comparte en segundos</h3>
+            <p>Envía tu invitación por WhatsApp, redes sociales o correo.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon">📍</div>
+            <h3>Información clara</h3>
+            <p>Organiza fecha, hora, ubicación y otros datos importantes en un solo lugar.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="proceso">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">El proceso</span>
+          <h2>Así de sencillo</h2>
+          <p>Una estructura inicial que podrás ajustar a tu forma de trabajar.</p>
+        </div>
+        <div class="steps">
+          <article class="card"><div class="step-number">01</div><h3>Cuéntanos tu idea</h3><p>Comparte el tipo de evento y lo que tienes en mente.</p></article>
+          <article class="card"><div class="step-number">02</div><h3>Personalizamos</h3><p>Definimos el estilo y los datos que llevará la invitación.</p></article>
+          <article class="card"><div class="step-number">03</div><h3>Revisas el diseño</h3><p>Compruebas la información antes de la entrega final.</p></article>
+          <article class="card"><div class="step-number">04</div><h3>La compartes</h3><p>Recibes tu invitación lista para enviar a tus invitados.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contacto">
+      <div class="container">
+        <div class="cta">
+          <div>
+            <h2>Hagamos realidad tu invitación.</h2>
+            <p>Pronto encontrarás aquí los datos de contacto y el enlace para hacer pedidos.</p>
+          </div>
+          <a class="button" href="mailto:contacto@tumarca.com">Contacto (editar)</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>© <span id="year"></span> TuMarca. Todos los derechos reservados.</span>
+      <span>Invitaciones digitales para momentos especiales.</span>
+    </div>
+  </footer>
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

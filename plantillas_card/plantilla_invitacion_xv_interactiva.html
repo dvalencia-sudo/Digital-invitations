@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Plantilla de ejemplo de invitación digital interactiva para quince años.">
+<title>Mis Quince Años | Invitación de ejemplo</title>
+<style>
+  :root {
+    --ink: #34251f;
+    --gold: #b38a4b;
+    --gold-light: #e8d6ad;
+    --cream: #fffaf0;
+    --muted: #76665a;
+    --rose: #f4e8e1;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; color: var(--ink); background: #201a18;
+    font-family: Georgia, "Times New Roman", serif;
+  }
+  button, a { -webkit-tap-highlight-color: transparent; }
+  button { font: inherit; }
+  .cover {
+    min-height: 100svh; display: flex; align-items: center; justify-content: center;
+    padding: 28px 18px; position: relative; overflow: hidden; text-align: center;
+    color: var(--cream);
+    background:
+      radial-gradient(ellipse at 50% 35%, rgba(179,138,75,.25), transparent 45%),
+      linear-gradient(145deg, #211a18, #443027 58%, #171312);
+  }
+  .cover::before, .cover::after {
+    content: "✦"; position: absolute; color: var(--gold-light); opacity: .55; font-size: 2rem;
+  }
+  .cover::before { top: 12%; left: 12%; }
+  .cover::after { bottom: 14%; right: 13%; }
+  .cover-frame {
+    width: min(520px, 100%); border: 1px solid rgba(232,214,173,.7);
+    outline: 1px solid rgba(232,214,173,.25); outline-offset: 8px;
+    padding: clamp(35px, 8vw, 70px) 24px; position: relative;
+  }
+  .eyebrow { text-transform: uppercase; letter-spacing: .25em; font: 11px Arial,sans-serif; color: var(--gold-light); }
+  .cover h1 { font-size: clamp(2.8rem, 10vw, 5.5rem); line-height: .98; font-weight: 400; margin: 24px 0 14px; }
+  .cover h1 span { display: block; color: var(--gold-light); font-style: italic; }
+  .cover .subtitle { letter-spacing: .22em; text-transform: uppercase; font: 12px Arial,sans-serif; margin: 22px 0 30px; }
+  .guest { color: #f5dfb7; margin: 0 0 7px; font-size: 1.05rem; }
+  .pass { color: #d6c9b9; font: 12px Arial,sans-serif; margin-bottom: 26px; }
+  .btn {
+    border: 1px solid var(--gold-light); background: var(--gold); color: #201814;
+    padding: 13px 22px; border-radius: 2px; text-transform: uppercase;
+    letter-spacing: .1em; font: 700 11px Arial,sans-serif; cursor: pointer;
+    display: inline-block; text-decoration: none; transition: .2s;
+  }
+  .btn:hover { background: var(--gold-light); transform: translateY(-1px); }
+  .btn.outline { color: var(--cream); background: transparent; }
+  .scroll-hint { display: block; margin-top: 25px; color: #d9cbb9; font: 10px Arial,sans-serif; letter-spacing: .15em; }
+  .invitation { display: none; background: var(--cream); }
+  .invitation.visible { display: block; animation: appear .8s ease both; }
+  @keyframes appear { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+  .section { padding: 78px 20px; text-align: center; }
+  .inner { width: min(780px, 100%); margin: 0 auto; }
+  .ornament { color: var(--gold); font-size: 1.7rem; letter-spacing: .4em; }
+  .kicker { font: 11px Arial,sans-serif; text-transform: uppercase; letter-spacing: .22em; color: var(--gold); }
+  h2 { font-size: clamp(2rem, 6vw, 3.3rem); font-weight: 400; margin: 16px 0; line-height: 1.1; }
+  .intro { background: var(--cream); }
+  .intro .name { font-size: clamp(2.5rem, 8vw, 4.5rem); color: var(--gold); font-style: italic; margin: 12px 0 20px; }
+  .intro p, .detail p { color: var(--muted); line-height: 1.8; max-width: 570px; margin: 12px auto; }
+  .countdown-section { color: var(--cream); background: #30231e; }
+  .countdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 28px; }
+  .time-box { border: 1px solid rgba(232,214,173,.35); padding: 18px 8px; }
+  .time-box strong { display: block; font-size: clamp(1.8rem, 5vw, 2.8rem); color: var(--gold-light); font-weight: 400; }
+  .time-box span { font: 10px Arial,sans-serif; letter-spacing: .12em; text-transform: uppercase; color: #d3c3b5; }
+  .details { background: #f4e8e1; }
+  .detail-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 32px; }
+  .detail { padding: 28px 18px; border: 1px solid #e4d1c5; background: rgba(255,255,255,.45); }
+  .detail h3 { font-weight: 400; font-size: 1.6rem; margin: 12px 0 8px; }
+  .detail p { font-size: .95rem; }
+  .dress { background: var(--cream); }
+  .dress-code { display: inline-block; border-top: 1px solid var(--gold-light); border-bottom: 1px solid var(--gold-light); padding: 16px 28px; margin-top: 12px; letter-spacing: .12em; }
+  .gifts { background: #f4e8e1; }
+  .gift-panel { max-width: 580px; margin: 28px auto 0; padding: 28px; border: 1px solid #e4d1c5; }
+  .gift-panel p { color: var(--muted); line-height: 1.8; }
+  .rsvp { background: #30231e; color: var(--cream); }
+  .rsvp p { color: #d3c3b5; line-height: 1.8; }
+  footer { padding: 28px 18px; text-align: center; background: #201a18; color: #c8b9aa; font: 11px Arial,sans-serif; letter-spacing: .08em; }
+  .back-top { display: inline-block; margin-top: 22px; }
+  @media(max-width: 560px) {
+    .detail-grid { grid-template-columns: 1fr; }
+    .countdown { gap: 6px; }
+    .time-box { padding: 14px 3px; }
+    .time-box span { font-size: 8px; letter-spacing: .05em; }
+    .section { padding: 62px 18px; }
+  }
+  @media(prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  }
+</style>
+</head>
+<body>
+  <header class="cover" id="portada">
+    <div class="cover-frame">
+      <div class="eyebrow">Una noche para recordar</div>
+      <h1>Mis <span>Quince</span></h1>
+      <div class="subtitle">Valentina Isabella Torres</div>
+      <p class="guest">Con mucho cariño para:</p>
+      <p class="guest" id="guestName">Sr. Andrés Sarmiento</p>
+      <p class="pass">Admisión: 1 pase</p>
+      <button class="btn" id="openBtn" type="button">Abrir invitación ✦</button>
+      <span class="scroll-hint">UNA VEZ ABIERTA, DESLIZA PARA VER LOS DETALLES</span>
+    </div>
+  </header>
+
+  <main class="invitation" id="invitation">
+    <section class="section intro">
+      <div class="inner">
+        <div class="ornament">✧ ❦ ✧</div>
+        <div class="kicker">Mis quince años</div>
+        <h2>Una fecha especial</h2>
+        <div class="name">Valentina Isabella</div>
+        <p>Un sueño se hace realidad y quiero compartirlo contigo en una noche llena de luz, música y alegría.</p>
+        <p>Tu presencia hará que este momento sea aún más inolvidable.</p>
+      </div>
+    </section>
+
+    <section class="section countdown-section">
+      <div class="inner">
+        <div class="kicker">La cuenta regresiva ha comenzado</div>
+        <h2>Falta muy poco</h2>
+        <p>Nos vemos el sábado 21 de noviembre de 2026.</p>
+        <div class="countdown" aria-label="Cuenta regresiva hasta el evento">
+          <div class="time-box"><strong id="days">00</strong><span>Días</span></div>
+          <div class="time-box"><strong id="hours">00</strong><span>Horas</span></div>
+          <div class="time-box"><strong id="minutes">00</strong><span>Minutos</span></div>
+          <div class="time-box"><strong id="seconds">00</strong><span>Segundos</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section details">
+      <div class="inner">
+        <div class="kicker">Detalles del evento</div>
+        <h2>Te espero</h2>
+        <div class="detail-grid">
+          <article class="detail">
+            <div class="ornament">✧</div>
+            <h3>Recepción</h3>
+            <p><strong>Salón Jardines de Luna</strong></p>
+            <p>Sábado 21 de noviembre<br>20:00</p>
+            <p>Av. de los Ejemplos 123, Guayaquil</p>
+            <a class="btn" href="https://maps.google.com/?q=Guayaquil+Ecuador" target="_blank" rel="noopener">Ver mapa</a>
+          </article>
+          <article class="detail">
+            <div class="ornament">✧</div>
+            <h3>Presentación</h3>
+            <p><strong>Un momento inolvidable</strong></p>
+            <p>La celebración principal comienza a las 21:30.</p>
+            <p>¡Gracias por acompañarme en este día tan especial!</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section dress">
+      <div class="inner">
+        <div class="ornament">✧</div>
+        <div class="kicker">Código de vestimenta</div>
+        <h2>Elegancia formal</h2>
+        <div class="dress-code">VESTIMENTA FORMAL</div>
+        <p style="color:var(--muted);line-height:1.8">Te invitamos a vestir de manera formal para compartir esta noche especial.</p>
+      </div>
+    </section>
+
+    <section class="section gifts">
+      <div class="inner">
+        <div class="kicker">Un detalle de cariño</div>
+        <h2>Regalos</h2>
+        <div class="gift-panel">
+          <div class="ornament">♡</div>
+          <p>Lo más importante para mí es contar con tu presencia. Si deseas tener un detalle, puedes hacerlo mediante un sobre.</p>
+          <button class="btn" id="giftBtn" type="button">Ver información</button>
+          <p id="giftInfo" hidden>Este es un dato de demostración. Reemplázalo por la información real cuando prepares tu invitación.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section rsvp">
+      <div class="inner">
+        <div class="kicker">Será un honor contar contigo</div>
+        <h2>¿Me acompañas?</h2>
+        <p>Por favor, confirma tu asistencia para ayudarnos a preparar cada detalle de esta celebración.</p>
+        <a class="btn" id="rsvpBtn" href="#" target="_blank" rel="noopener">Confirmar por WhatsApp</a>
+        <p style="font-size:.8rem">El número de WhatsApp del enlace es ficticio y debe reemplazarse.</p>
+        <a class="btn outline back-top" href="#portada">Volver a la portada ↑</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>INVITACIÓN DE DEMOSTRACIÓN · NOMBRES, FECHAS Y LUGAR FICTICIOS</footer>
+
+<script>
+  const openBtn = document.getElementById("openBtn");
+  const invitation = document.getElementById("invitation");
+  openBtn.addEventListener("click", () => {
+    invitation.classList.add("visible");
+    openBtn.textContent = "Invitación abierta ✓";
+    openBtn.disabled = true;
+    invitation.scrollIntoView({ behavior: "smooth" });
+  });
+
+  const eventDate = new Date("2026-11-21T20:00:00-05:00").getTime();
+  function updateCountdown() {
+    const distance = eventDate - Date.now();
+    const values = distance > 0 ? {
+      days: Math.floor(distance / 86400000),
+      hours: Math.floor((distance % 86400000) / 3600000),
+      minutes: Math.floor((distance % 3600000) / 60000),
+      seconds: Math.floor((distance % 60000) / 1000)
+    } : { days: 0, hours: 0, minutes: 0, seconds: 0 };
+    Object.entries(values).forEach(([id, value]) => {
+      document.getElementById(id).textContent = String(value).padStart(2, "0");
+    });
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  document.getElementById("giftBtn").addEventListener("click", () => {
+    const info = document.getElementById("giftInfo");
+    info.hidden = !info.hidden;
+    document.getElementById("giftBtn").textContent = info.hidden ? "Ver información" : "Ocultar información";
+  });
+
+  // Cambia este número ficticio por el WhatsApp real en formato internacional.
+  const whatsappNumber = "593999999999";
+  const message = "Hola, confirmo mi asistencia a los quince años de Valentina Isabella.";
+  document.getElementById("rsvpBtn").href =
+    "https://wa.me/" + whatsappNumber + "?text=" + encodeURIComponent(message);
+</script>
+</body>
+</html>
