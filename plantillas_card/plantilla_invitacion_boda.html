@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Ejemplo de invitación digital interactiva para una boda.">
+  <title>Nuestra boda | Invitación de ejemplo</title>
+  <style>
+    :root {
+      --ink: #26372f;
+      --green: #526e5c;
+      --green-dark: #30473a;
+      --sage: #dce7dc;
+      --cream: #fbfaf5;
+      --muted: #68756a;
+      --rose: #ead9d1;
+      --white: #fff;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; color: var(--ink); background: var(--cream); font-family: Georgia, "Times New Roman", serif; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button { font: inherit; }
+    .cover {
+      min-height: 100svh; display: grid; place-items: center; padding: 32px 20px;
+      position: relative; overflow: hidden; text-align: center; color: var(--cream);
+      background: radial-gradient(ellipse at 50% 35%, rgba(220,231,220,.22), transparent 50%),
+        linear-gradient(145deg, #20352b, #526e5c 58%, #263b30);
+    }
+    .cover::before, .cover::after {
+      position: absolute; color: rgba(220,231,220,.7); font-size: clamp(5rem, 17vw, 12rem);
+      font-weight: 400; line-height: 1; animation: drift 7s ease-in-out infinite;
+    }
+    .cover::before { content: "❧"; top: 5%; left: 4%; transform: rotate(-25deg); }
+    .cover::after { content: "❧"; right: 4%; bottom: 4%; animation-delay: -3.5s; transform: rotate(155deg); }
+    .cover-frame {
+      width: min(560px, 100%); padding: clamp(42px, 9vw, 76px) 24px;
+      position: relative; border: 1px solid rgba(242,237,220,.7);
+      outline: 1px solid rgba(242,237,220,.25); outline-offset: 8px;
+      animation: rise .9s ease both;
+    }
+    .eyebrow, .subtitle, .scroll-hint, .kicker, .btn, footer {
+      font-family: Arial, Helvetica, sans-serif; text-transform: uppercase;
+    }
+    .eyebrow { color: #e2eadc; font-size: 11px; letter-spacing: .28em; }
+    .cover h1 { margin: 25px 0 12px; font-size: clamp(3.2rem, 11vw, 6rem); line-height: .9; font-weight: 400; }
+    .cover h1 span { display: block; color: #e2eadc; font-style: italic; }
+    .subtitle { margin: 28px 0; font-size: 11px; letter-spacing: .25em; }
+    .cover-date { color: #e2eadc; letter-spacing: .12em; }
+    .btn {
+      display: inline-block; border: 1px solid #e2eadc; border-radius: 999px;
+      padding: 13px 22px; background: #e2eadc; color: var(--green-dark);
+      font-size: 10px; font-weight: 700; letter-spacing: .13em; text-decoration: none;
+      cursor: pointer; transition: transform .25s ease, background .25s ease, box-shadow .25s ease;
+    }
+    .btn:hover { transform: translateY(-3px); background: var(--white); box-shadow: 0 8px 22px #15251b55; }
+    .btn.outline { background: transparent; color: var(--cream); }
+    .scroll-hint { display: block; margin-top: 25px; color: #dce7dc; font-size: 9px; letter-spacing: .16em; }
+    .invitation { display: none; }
+    .invitation.visible { display: block; animation: reveal .8s ease both; }
+    .section { padding: 78px 20px; text-align: center; }
+    .inner { width: min(780px, 100%); margin: 0 auto; }
+    .ornament { color: var(--green); font-size: 1.8rem; letter-spacing: .35em; }
+    .kicker { color: var(--green); font-size: 10px; letter-spacing: .24em; }
+    h2 { margin: 16px 0; font-size: clamp(2.1rem, 6vw, 3.5rem); line-height: 1.08; font-weight: 400; }
+    .intro p, .detail p, .rsvp p { max-width: 570px; margin: 12px auto; color: var(--muted); line-height: 1.85; }
+    .couple { margin: 18px 0; color: var(--green); font-size: clamp(2.7rem, 8vw, 4.6rem); font-style: italic; }
+    .story { background: #eef2e9; }
+    .details { background: var(--rose); }
+    .detail-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 32px; }
+    .detail { padding: 30px 20px; border: 1px solid #d4c5bc; background: #ffffff77; transition: transform .3s ease, box-shadow .3s ease; }
+    .detail:hover { transform: translateY(-5px); box-shadow: 0 14px 32px #463c3214; }
+    .detail h3 { margin: 12px 0 8px; font-size: 1.5rem; font-weight: 400; }
+    .detail p { font-size: .94rem; }
+    .detail .btn { margin-top: 8px; background: var(--green); color: white; border-color: var(--green); }
+    .dress { background: var(--cream); }
+    .dress-code { display: inline-block; margin-top: 12px; padding: 16px 28px; border-top: 1px solid #b7c6b4; border-bottom: 1px solid #b7c6b4; letter-spacing: .12em; }
+    .rsvp { color: var(--cream); background: var(--green-dark); }
+    .rsvp .kicker { color: #dce7dc; }
+    .rsvp p { color: #d4ddd4; }
+    .rsvp .btn { margin-top: 10px; }
+    footer { padding: 26px 16px; text-align: center; background: #20352b; color: #d4ddd4; font-size: 9px; letter-spacing: .1em; }
+    .back-top { display: inline-block; margin-top: 20px; }
+    @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes reveal { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes drift { 0%, 100% { translate: 0 0; } 50% { translate: 0 -12px; } }
+    @media (max-width: 560px) {
+      .detail-grid { grid-template-columns: 1fr; }
+      .section { padding: 62px 18px; }
+      .cover::before { left: -5%; }
+      .cover::after { right: -5%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="cover" id="portada">
+    <div class="cover-frame">
+      <div class="eyebrow">Con la alegría de nuestras familias</div>
+      <h1>Nos <span>casamos</span></h1>
+      <div class="subtitle">Sofía &amp; Mateo</div>
+      <p class="cover-date">12 · JUNIO · 2027</p>
+      <button class="btn" id="openBtn" type="button">Abrir invitación</button>
+      <span class="scroll-hint">UNA VEZ ABIERTA, DESLIZA PARA VER LOS DETALLES</span>
+    </div>
+  </header>
+
+  <main class="invitation" id="invitation">
+    <section class="section intro">
+      <div class="inner">
+        <div class="ornament">❧ ♡ ❧</div>
+        <div class="kicker">Una nueva aventura comienza</div>
+        <h2>¡Nos encantaría compartir este día contigo!</h2>
+        <div class="couple">Sofía &amp; Mateo</div>
+        <p>Después de tantos momentos compartidos, hemos decidido dar el siguiente paso. Nos haría muy felices celebrar nuestro amor rodeados de las personas que más queremos.</p>
+      </div>
+    </section>
+
+    <section class="section story">
+      <div class="inner">
+        <div class="kicker">Reserva la fecha</div>
+        <h2>Sábado, 12 de junio de 2027</h2>
+        <p>La ceremonia comenzará a las 16:00. Después brindaremos y celebraremos juntos hasta la noche.</p>
+        <div class="ornament">✧</div>
+      </div>
+    </section>
+
+    <section class="section details">
+      <div class="inner">
+        <div class="kicker">Todos los detalles</div>
+        <h2>¿Dónde nos encontramos?</h2>
+        <div class="detail-grid">
+          <article class="detail">
+            <div class="ornament">⌂</div>
+            <h3>Ceremonia</h3>
+            <p><strong>Jardín Los Olivos</strong></p>
+            <p>16:00<br>Av. de los Ejemplos 123, Quito</p>
+            <a class="btn" href="https://maps.google.com/?q=Quito+Ecuador" target="_blank" rel="noopener">Ver ubicación</a>
+          </article>
+          <article class="detail">
+            <div class="ornament">✦</div>
+            <h3>Celebración</h3>
+            <p><strong>La misma alegría, otro brindis</strong></p>
+            <p>Recepción y cena a partir de las 18:00, en el mismo jardín.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section dress">
+      <div class="inner">
+        <div class="ornament">❧</div>
+        <div class="kicker">Código de vestimenta</div>
+        <h2>Formal de jardín</h2>
+        <div class="dress-code">TONOS NATURALES · EVITAR BLANCO</div>
+        <p>Te invitamos a elegir un atuendo formal y cómodo para disfrutar al aire libre.</p>
+      </div>
+    </section>
+
+    <section class="section rsvp">
+      <div class="inner">
+        <div class="kicker">Confirma antes del 20 de mayo</div>
+        <h2>¿Nos acompañas?</h2>
+        <p>Tu respuesta nos ayudará a preparar cada detalle. Este enlace de demostración usa un número ficticio; reemplázalo antes de compartir la invitación.</p>
+        <a class="btn" id="rsvpBtn" href="#" target="_blank" rel="noopener">Confirmar por WhatsApp</a>
+        <br>
+        <a class="btn outline back-top" href="#portada">Volver a la portada ↑</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>INVITACIÓN DE DEMOSTRACIÓN · NOMBRES, FECHA Y LUGAR FICTICIOS</footer>
+  <script>
+    const openBtn = document.getElementById("openBtn");
+    const invitation = document.getElementById("invitation");
+    openBtn.addEventListener("click", () => {
+      invitation.classList.add("visible");
+      openBtn.textContent = "Invitación abierta ✓";
+      openBtn.disabled = true;
+      invitation.scrollIntoView({ behavior: "smooth" });
+    });
+
+    const whatsappNumber = "593999999999";
+    const message = "Hola, confirmo mi asistencia a la boda de Sofía y Mateo.";
+    document.getElementById("rsvpBtn").href =
+      "https://wa.me/" + whatsappNumber + "?text=" + encodeURIComponent(message);
+  </script>
+</body>
+</html>

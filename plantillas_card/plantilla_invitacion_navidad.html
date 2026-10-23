@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Ejemplo de invitación digital interactiva para una celebración de Navidad.">
+  <title>Navidad en familia | Invitación de ejemplo</title>
+  <style>
+    :root {
+      --ink: #34352c;
+      --pine: #173f35;
+      --pine-light: #286451;
+      --red: #a83e3b;
+      --red-dark: #762c2b;
+      --gold: #e5c77e;
+      --cream: #fff9ed;
+      --muted: #756b5b;
+      --snow: #f3f5ed;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; color: var(--ink); background: var(--cream); font-family: "Trebuchet MS", Arial, sans-serif; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button { font: inherit; }
+    .cover {
+      min-height: 100svh; display: grid; place-items: center; padding: 32px 20px;
+      position: relative; isolation: isolate; overflow: hidden; text-align: center; color: var(--cream);
+      background: radial-gradient(ellipse at 50% 28%, #286451 0, transparent 48%),
+        linear-gradient(150deg, #102f29, var(--pine) 58%, #102b25);
+    }
+    .snow { position: absolute; z-index: -1; inset: -10% 0 0; pointer-events: none; overflow: hidden; }
+    .flake {
+      position: absolute; top: -12%; color: #fff9ed; opacity: .68;
+      animation: snowfall linear infinite;
+    }
+    .flake:nth-child(1) { left: 8%; font-size: 12px; animation-duration: 12s; }
+    .flake:nth-child(2) { left: 23%; font-size: 9px; animation-duration: 16s; animation-delay: -5s; }
+    .flake:nth-child(3) { left: 39%; font-size: 14px; animation-duration: 14s; animation-delay: -9s; }
+    .flake:nth-child(4) { left: 56%; font-size: 10px; animation-duration: 17s; animation-delay: -3s; }
+    .flake:nth-child(5) { left: 72%; font-size: 13px; animation-duration: 13s; animation-delay: -7s; }
+    .flake:nth-child(6) { left: 91%; font-size: 9px; animation-duration: 15s; animation-delay: -11s; }
+    .cover-frame {
+      width: min(560px, 100%); padding: clamp(40px, 9vw, 74px) 24px;
+      position: relative; border: 1px solid rgba(229,199,126,.75);
+      outline: 1px solid rgba(229,199,126,.24); outline-offset: 8px;
+      background: rgba(10,35,29,.25); animation: rise .9s ease both;
+    }
+    .cover-frame::before, .cover-frame::after { content: "✦"; position: absolute; color: var(--gold); font-size: 1.2rem; }
+    .cover-frame::before { top: 12px; left: 14px; }
+    .cover-frame::after { right: 14px; bottom: 12px; }
+    .eyebrow, .subtitle, .scroll-hint, .kicker, .btn, footer {
+      font-family: Arial, Helvetica, sans-serif; text-transform: uppercase;
+    }
+    .eyebrow { color: var(--gold); font-size: 10px; letter-spacing: .26em; }
+    .cover h1 { margin: 24px 0 10px; color: var(--cream); font-family: Georgia, "Times New Roman", serif; font-size: clamp(3.2rem, 11vw, 6rem); line-height: .93; font-weight: 400; }
+    .cover h1 span { display: block; color: var(--gold); font-style: italic; }
+    .subtitle { margin: 26px 0; font-size: 11px; letter-spacing: .22em; }
+    .cover-date { color: #e3eadf; }
+    .btn {
+      display: inline-block; border: 1px solid var(--gold); border-radius: 4px;
+      padding: 13px 22px; background: var(--red); color: white;
+      font-size: 10px; font-weight: 700; letter-spacing: .13em; text-decoration: none;
+      cursor: pointer; transition: transform .25s ease, background .25s ease, box-shadow .25s ease;
+    }
+    .btn:hover { transform: translateY(-3px); background: var(--red-dark); box-shadow: 0 8px 22px #071c1755; }
+    .btn.outline { background: transparent; color: var(--cream); }
+    .scroll-hint { display: block; margin-top: 25px; color: #dbe4d8; font-size: 9px; letter-spacing: .15em; }
+    .invitation { display: none; }
+    .invitation.visible { display: block; animation: reveal .8s ease both; }
+    .section { padding: 76px 20px; text-align: center; }
+    .inner { width: min(780px, 100%); margin: 0 auto; }
+    .ornament { color: var(--red); font-size: 1.8rem; letter-spacing: .35em; }
+    .kicker { color: var(--red); font-size: 10px; letter-spacing: .23em; }
+    h2 { margin: 16px 0; font-family: Georgia, "Times New Roman", serif; font-size: clamp(2.1rem, 6vw, 3.5rem); line-height: 1.08; font-weight: 400; }
+    .intro { background: var(--cream); }
+    .intro h2 span { color: var(--pine); font-style: italic; }
+    .intro p, .detail p, .rsvp p { max-width: 570px; margin: 12px auto; color: var(--muted); line-height: 1.85; }
+    .family { margin: 20px 0; color: var(--pine); font: italic clamp(2.5rem, 8vw, 4.2rem) Georgia, serif; }
+    .message { background: var(--snow); }
+    .message-box { max-width: 650px; margin: 28px auto 0; padding: 30px; border: 1px solid #d8dfd1; background: #fffefa; box-shadow: 0 12px 35px #213c3010; }
+    .details { background: #f5e8da; }
+    .detail-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 30px; }
+    .detail { padding: 28px 18px; border: 1px solid #e2cdbb; background: #fffaf3b8; transition: transform .3s ease, box-shadow .3s ease; }
+    .detail:hover { transform: translateY(-5px); box-shadow: 0 14px 32px #463c3214; }
+    .detail h3 { margin: 12px 0 8px; color: var(--pine); font: 400 1.5rem Georgia, serif; }
+    .detail p { font-size: .94rem; }
+    .detail .btn { margin-top: 8px; }
+    .bring { background: var(--pine); color: var(--cream); }
+    .bring .kicker, .bring .ornament { color: var(--gold); }
+    .bring p { max-width: 570px; margin: 12px auto; color: #e1e7dc; line-height: 1.8; }
+    .rsvp { background: var(--red-dark); color: var(--cream); }
+    .rsvp .kicker { color: var(--gold); }
+    .rsvp p { color: #f0ded5; }
+    .rsvp .btn { margin-top: 10px; background: var(--pine); border-color: var(--gold); }
+    footer { padding: 26px 16px; text-align: center; background: #102f29; color: #dce4d8; font-size: 9px; letter-spacing: .1em; }
+    .back-top { display: inline-block; margin-top: 20px; }
+    @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes reveal { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes snowfall { to { transform: translate3d(24px, 115vh, 0) rotate(180deg); } }
+    @media (max-width: 560px) {
+      .detail-grid { grid-template-columns: 1fr; }
+      .section { padding: 60px 18px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="cover" id="portada">
+    <div class="snow" aria-hidden="true">
+      <span class="flake">❄</span><span class="flake">✦</span><span class="flake">❄</span>
+      <span class="flake">✧</span><span class="flake">❄</span><span class="flake">✦</span>
+    </div>
+    <div class="cover-frame">
+      <div class="eyebrow">La magia está en compartir</div>
+      <h1>Feliz <span>Navidad</span></h1>
+      <div class="subtitle">Una noche para estar juntos</div>
+      <p class="cover-date">24 · DICIEMBRE · 2026</p>
+      <button class="btn" id="openBtn" type="button">Abrir invitación</button>
+      <span class="scroll-hint">UNA VEZ ABIERTA, DESLIZA PARA VER LOS DETALLES</span>
+    </div>
+  </header>
+
+  <main class="invitation" id="invitation">
+    <section class="section intro">
+      <div class="inner">
+        <div class="ornament">✦ ❄ ✦</div>
+        <div class="kicker">Celebremos juntos</div>
+        <h2>La Navidad se disfruta más <span>en familia</span></h2>
+        <div class="family">Familia Rivera</div>
+        <p>Queremos reunir a las personas que hacen especial cada momento. Acompáñanos a compartir una noche de buenos deseos, comida rica y muchas risas.</p>
+      </div>
+    </section>
+
+    <section class="section message">
+      <div class="inner">
+        <div class="kicker">Una noche especial</div>
+        <h2>Brindemos por lo que nos une</h2>
+        <div class="message-box">
+          <div class="ornament">♡</div>
+          <p>Habrá cena, música y juegos para disfrutar entre grandes y pequeños. Lo único que hace falta para completar la celebración es que estés ahí.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section details">
+      <div class="inner">
+        <div class="kicker">Guarda la fecha</div>
+        <h2>Nos vemos en Nochebuena</h2>
+        <div class="detail-grid">
+          <article class="detail">
+            <div class="ornament">⌂</div>
+            <h3>La reunión</h3>
+            <p><strong>Casa de la familia Rivera</strong></p>
+            <p>Jueves 24 de diciembre<br>19:00</p>
+            <p>Calle de los Ejemplos 456, Cuenca</p>
+            <a class="btn" href="https://maps.google.com/?q=Cuenca+Ecuador" target="_blank" rel="noopener">Ver ubicación</a>
+          </article>
+          <article class="detail">
+            <div class="ornament">♧</div>
+            <h3>Plan de la noche</h3>
+            <p><strong>Cena compartida</strong></p>
+            <p>La cena estará lista a las 20:00. Después, juegos, música y brindis de medianoche.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section bring">
+      <div class="inner">
+        <div class="ornament">✧</div>
+        <div class="kicker">Un pequeño detalle</div>
+        <h2>¿Qué puedes traer?</h2>
+        <p>Si quieres, trae un postre o una bebida para compartir. No hace falta traer regalos: tu compañía es lo más importante.</p>
+      </div>
+    </section>
+
+    <section class="section rsvp">
+      <div class="inner">
+        <div class="kicker">Confirma antes del 18 de diciembre</div>
+        <h2>¡Te esperamos!</h2>
+        <p>Avísanos cuántas personas vienen contigo para preparar todo con cariño. Este enlace usa un número ficticio; reemplázalo antes de compartir la invitación.</p>
+        <a class="btn" id="rsvpBtn" href="#" target="_blank" rel="noopener">Confirmar por WhatsApp</a>
+        <br>
+        <a class="btn outline back-top" href="#portada">Volver a la portada ↑</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>INVITACIÓN DE DEMOSTRACIÓN · FAMILIA, FECHA Y LUGAR FICTICIOS</footer>
+  <script>
+    const openBtn = document.getElementById("openBtn");
+    const invitation = document.getElementById("invitation");
+    openBtn.addEventListener("click", () => {
+      invitation.classList.add("visible");
+      openBtn.textContent = "Invitación abierta ✓";
+      openBtn.disabled = true;
+      invitation.scrollIntoView({ behavior: "smooth" });
+    });
+
+    const whatsappNumber = "593999999999";
+    const message = "Hola, confirmo mi asistencia a la celebración de Navidad de la familia Rivera.";
+    document.getElementById("rsvpBtn").href =
+      "https://wa.me/" + whatsappNumber + "?text=" + encodeURIComponent(message);
+  </script>
+</body>
+</html>
